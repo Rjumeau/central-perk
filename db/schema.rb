@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_28_165334) do
+ActiveRecord::Schema.define(version: 2022_05_28_173527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,9 @@ ActiveRecord::Schema.define(version: 2022_05_28_165334) do
     t.bigint "mediable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "post_id"
     t.index ["mediable_type", "mediable_id"], name: "index_media_on_mediable"
+    t.index ["post_id"], name: "index_media_on_post_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -52,12 +54,11 @@ ActiveRecord::Schema.define(version: 2022_05_28_165334) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.bigint "medium_id", null: false
     t.bigint "group_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "content"
     t.index ["group_id"], name: "index_posts_on_group_id"
-    t.index ["medium_id"], name: "index_posts_on_medium_id"
   end
 
   create_table "tvshows", force: :cascade do |t|
@@ -82,6 +83,6 @@ ActiveRecord::Schema.define(version: 2022_05_28_165334) do
   end
 
   add_foreign_key "groups", "users"
+  add_foreign_key "media", "posts"
   add_foreign_key "posts", "groups"
-  add_foreign_key "posts", "media"
 end
